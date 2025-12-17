@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Admin Passcode</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            background: #ececec;
+            font-family: Arial, sans-serif;
+        }
+
+        .passcode-box {
+            width: 380px;
+            margin: 130px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .passcode-box h2 {
+            font-size: 26px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .passcode-box p {
+            margin-bottom: 20px;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .passcode-box input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .passcode-btn {
+            width: 100%;
+            background: #333;
+            color: white;
+            font-size: 16px;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .passcode-btn:hover {
+            background: #555;
+        }
+
+        .error-msg {
+            display: none;
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="passcode-box">
+    <h2>Create Admin</h2>
+    <p>Enter Admin Creation Passcode</p>
+
+    <input type="password" id="adminCode" placeholder="Enter Passcode">
+
+    <button class="passcode-btn" onclick="verifyAdminCode()">Verify</button>
+
+    <p id="error" class="error-msg">Incorrect Passcode</p>
+</div>
+
+<script>
+function verifyAdminCode() {
+    const code = document.getElementById("adminCode").value;
+
+    if (code === "CREATEADMIN123") {
+        window.location.href = "adminsignup.html";
+    } else {
+        document.getElementById("error").style.display = "block";
+    }
+}
+</script>
+
+</body>
+</html>
+

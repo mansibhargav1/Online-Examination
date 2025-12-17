@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login - Online Examination System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="navbar">
+    <h2 class="logo">Online Examination System</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="help.html">Help</a>
+        <a href="contact.html">Contact</a>
+        <a href="adminsignin.html" class="active">Admin Login</a>
+    </nav>
+</header>
+
+<div class="center-body">
+    <div class="auth-card">
+
+        <h2 class="auth-title">Admin Login</h2>
+
+        <form class="auth-form" onsubmit="handleAdminSignin(event)">
+            <label>Email</label>
+            <input id="adminEmail" type="email" required>
+
+            <label>Password</label>
+            <input id="adminPassword" type="password" required>
+
+            <button class="auth-btn" type="submit">Login</button>
+        </form>
+
+        <p id="adminMessage" class="msg"></p>
+
+        <div class="auth-footer">
+            New Admin? <a href="adminsignup.html">Create Account</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+async function handleAdminSignin(event) {
+    event.preventDefault();
+
+    let msg = document.getElementById("adminMessage");
+
+    const email = document.getElementById("adminEmail").value.trim();
+    const password = document.getElementById("adminPassword").value.trim();
+
+    try {
+        const res = await fetch("http://localhost:8081/api/admin/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const text = await res.text();
+
+        if (res.ok && text.toLowerCase().includes("success")) {
+            msg.className = "msg success";
+            msg.innerText = "Login successful! Redirecting...";
+            setTimeout(() => window.location.href = "admindashboard.html", 1500);
+        } else {
+            msg.className = "msg error";
+            msg.innerText = "Invalid admin credentials.";
+        }
+
+    } catch (error) {
+        msg.className = "msg error";
+        msg.innerText = "Server unreachable.";
+    }
+}
+</script>
+
+</body>
+</html>
+

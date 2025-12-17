@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: exam-mysql
+    #restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: examdb
+      MYSQL_USER: examuser
+      MYSQL_PASSWORD: exampass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build: ./backend
+    container_name: exam-backend
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/examdb
+      SPRING_DATASOURCE_USERNAME: examuser
+      SPRING_DATASOURCE_PASSWORD: exampass
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
+      SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT: "0"
+    ports:
+      - "8081:8081"
+
+  frontend:
+    build: ./frontend
+    image: exam-frontend:v6
+    container_name: exam-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+volumes:
+  mysql_data:
+

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="navbar">
+    <h2 class="logo">Admin Dashboard</h2>
+</header>
+
+<section class="features-premium">
+
+    <!-- Create Admin Panel -->
+    <div class="card-premium">
+        <h3>Create Admin</h3>
+        <p>Register a new admin account.</p>
+        <button onclick="window.location.href='admin-create-passcode.html'">Create Admin</button>
+	
+    </div>
+
+    <!-- Create User Panel -->
+    <div class="card-premium">
+        <h3>Create User</h3>
+        <p>Create a new student exam account.</p>
+        <button onclick="window.location.href='signup.html'">Create User</button>
+    </div>
+
+    <!-- Add Questions Panel -->
+    <div class="card-premium">
+        <h3>CUD Questions</h3>
+        <p>Add Update Delete question.</p>
+        <button onclick="window.location.href='add-questions-passcode.html'">Add Questions</button>
+    </div>
+
+</section>
+
+<script>
+/* ------------------------------
+   PASSCODE 1 — CREATE ADMIN
+--------------------------------*/
+function verifyCreateAdmin() {
+    let code = prompt("Enter Admin Creation Passcode:");
+
+    if (code === "CREATEADMIN123") {
+        window.location.href = "adminsignup.html";
+    } else {
+        alert("Invalid passcode!");
+    }
+}
+
+/* ------------------------------
+   PASSCODE 2 — ADD QUESTIONS
+--------------------------------*/
+function verifyAddQuestions() {
+    let code = prompt("Enter Add Questions Passcode:");
+
+    if (code === "ADDQUESTIONS123") {
+        window.location.href = "add-questions.html";
+    } else {
+        alert("Invalid passcode!");
+    }
+}
+</script>
+
+</body>
+</html>
+

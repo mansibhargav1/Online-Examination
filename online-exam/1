@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam - Online Examination System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="navbar">
+    <h2 class="logo">Online Examination System</h2>
+</header>
+
+<div class="exam-container">
+    <h2>Exam - 60 Questions</h2>
+
+    <div id="questionBox">Loading questions...</div>
+
+    <button id="prevBtn" onclick="prevQuestion()" style="display:none; margin-right:10px;">Previous</button>
+    <button id="nextBtn" onclick="nextQuestion()">Next</button>
+</div>
+
+<script>
+let questions = [];
+let index = 0;
+
+async function loadQuestions() {
+    try {
+        const res = await fetch("http://localhost:8081/api/questions");
+        questions = await res.json();
+
+        if (!Array.isArray(questions) || questions.length === 0) {
+            document.getElementById("questionBox").innerHTML =
+                "<p>No questions found.</p>";
+            return;
+        }
+
+        showQuestion();
+    } catch (err) {
+        document.getElementById("questionBox").innerHTML =
+            "<p style='color:red;'>Failed to load questions.</p>";
+    }
+}
+
+function showQuestion() {
+    if (index >= questions.length) {
+        document.getElementById("questionBox").innerHTML =
+            `<h2>Exam Completed!</h2>`;
+        document.getElementById("nextBtn").style.display = "none";
+        return;
+    }
+
+    const q = questions[index];
+
+    document.getElementById("questionBox").innerHTML = `
+        <h3>Q${index + 1}. ${q.questionText}</h3>
+        <label><input type="radio" name="opt" value="A"> ${q.optionA}</label><br>
+        <label><input type="radio" name="opt" value="B"> ${q.optionB}</label><br>
+        <label><input type="radio" name="opt" value="C"> ${q.optionC}</label><br>
+        <label><input type="radio" name="opt" value="D"> ${q.optionD}</label><br>
+    `;
+}
+
+function nextQuestion() {
+    index++;
+    showQuestion();
+}
+
+loadQuestions();
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign In</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="navbar">
+    <h2 class="logo">Online Examination System</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="help.html">Help</a>
+        <a href="contact.html">Contact</a>
+        <a href="signin.html" class="active">Login</a>
+    </nav>
+</header>
+
+<div class="center-body">
+    <div class="auth-card">
+
+        <h2 class="auth-title">Sign In</h2>
+
+        <form class="auth-form" onsubmit="handleSignin(event)">
+            <label>Email</label>
+            <input id="email" type="email" required>
+
+            <label>Password</label>
+            <input id="password" type="password" required>
+
+            <button class="auth-btn" type="submit">Sign In</button>
+        </form>
+
+        <p id="message" class="msg"></p>
+
+        <div class="auth-footer">
+            Don’t have an account? <a href="signup.html">Sign Up</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+async function handleSignin(event) {
+    event.preventDefault();
+
+    let msg = document.getElementById("message");
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    try {
+        const res = await fetch("http://localhost:8081/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const text = await res.text();
+
+        if (res.ok) {
+            // ⭐ STORE USER ID FOR EXAM SUBMISSION ⭐
+            localStorage.setItem("userId", text);
+
+            msg.className = "msg success";
+            msg.innerText = "Login successful! Redirecting...";
+
+            setTimeout(() => {
+                window.location.href = "welcome.html";
+            }, 1200);
+        } else {
+            msg.className = "msg error";
+            msg.innerText = text;
+        }
+
+    } catch (error) {
+        msg.className = "msg error";
+        msg.innerText = "Server unreachable.";
+    }
+}
+</script>
+
+</body>
+</html>
+

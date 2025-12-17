@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Questions</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            background: #e8f1ff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .top-bar {
+            background: #0d6efd;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .button-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .menu-btn {
+            background: #0d6efd;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+        }
+
+        .menu-btn:hover {
+            background: #0b5ed7;
+        }
+
+        .card {
+            background: white;
+            width: 55%;
+            margin: 60px auto;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        h2 {
+            color: #0d6efd;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .row input {
+            flex: 1;
+        }
+
+        button {
+            width: 100%;
+            background: #0d6efd;
+            margin-top: 22px;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0b5ed7;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="top-bar">
+    Online Examination System
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="admin-dashboard.html">Admin Dashboard</a>
+        <a href="index.html" style="color:#ffdddd; font-weight:bold;">Exit</a>
+    </div>
+</div>
+
+<div class="button-container">
+    <button class="menu-btn" onclick="location.href='add-questions.html'">Add Question</button>
+    <button class="menu-btn" onclick="location.href='update-questions.html'">Update Question</button>
+    <button class="menu-btn" onclick="location.href='delete-questions.html'">Delete Question</button>
+</div>
+
+<div class="card">
+    <h2>Select Question to Update</h2>
+
+    <select id="updateSelect"></select>
+
+    <div style="margin-top: 20px;">
+        <label>Question Text:</label>
+        <input id="qText" type="text">
+
+        <div class="row">
+            <input id="optionA" placeholder="Option A">
+            <input id="optionB" placeholder="Option B">
+        </div>
+
+        <div class="row">
+            <input id="optionC" placeholder="Option C">
+            <input id="optionD" placeholder="Option D">
+        </div>
+
+        <input id="correctAnswer" placeholder="Correct Answer">
+
+        <button onclick="updateQuestion()">Update Question</button>
+    </div>
+</div>
+
+<script>
+fetch("http://localhost:8081/api/questions/all")
+    .then(res => res.json())
+    .then(questions => {
+        const select = document.getElementById("updateSelect");
+
+        questions.forEach((q, index) => {
+            const option = document.createElement("option");
+            option.value = q.id;
+            option.textContent = (index + 1) + ". " + q.questionText;
+            select.appendChild(option);
+        });
+
+        select.onchange = () => fillForm(questions);
+        fillForm(questions);
+    });
+
+function fillForm(questions) {
+    const id = document.getElementById("updateSelect").value;
+    const q = questions.find(x => x.id == id);
+
+    document.getElementById("qText").value = q.questionText;
+    document.getElementById("optionA").value = q.optionA;
+    document.getElementById("optionB").value = q.optionB;
+    document.getElementById("optionC").value = q.optionC;
+    document.getElementById("optionD").value = q.optionD;
+    document.getElementById("correctAnswer").value = q.correctAnswer;
+}
+
+function updateQuestion() {
+    const id = document.getElementById("updateSelect").value;
+
+    const data = {
+        questionText: document.getElementById("qText").value,
+        optionA: document.getElementById("optionA").value,
+        optionB: document.getElementById("optionB").value,
+        optionC: document.getElementById("optionC").value,
+        optionD: document.getElementById("optionD").value,
+        correctAnswer: document.getElementById("correctAnswer").value
+    };
+
+    fetch("http://localhost:8081/api/questions/update/" + id, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    }).then(r => r.text()).then(alert);
+}
+</script>
+
+</body>
+</html>
+

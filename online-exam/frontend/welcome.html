@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Online Examination System</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="help.html">Help</a>
+        <a href="contact.html">Contact</a>
+        <a href="signin.html">Login</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Welcome to the Exam Portal 🎉</h2>
+    <p>You are successfully logged in.</p>
+
+    <button onclick="startExam()">Start Exam</button>
+</section>
+
+<script>
+async function startExam() {
+    const userId = localStorage.getItem("userId");
+
+    const res = await fetch(`http://localhost:8081/api/exam/start?userId=${userId}`);
+
+    if (!res.ok) {
+        // ⛔ Redirect to blocked page instead of alert
+        window.location.href = "exam-blocked.html";
+        return;
+    }
+
+    window.location.href = "exam.html";
+}
+</script>
+
+</body>
+</html>
+

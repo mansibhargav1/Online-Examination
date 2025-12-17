@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Exam Result</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .result-box {
+            max-width: 550px;
+            margin: 120px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        .result-row {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .status-pass {
+            color: green;
+            font-weight: bold;
+        }
+        .status-fail {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <h2 class="logo">Online Examination System</h2>
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+
+<div class="result-box">
+    <h2>Your Exam Result</h2>
+
+    <p class="result-row"><strong>Name:</strong> <span id="name"></span></p>
+    <p class="result-row"><strong>Email:</strong> <span id="email"></span></p>
+    <p class="result-row"><strong>Score:</strong> <span id="score"></span></p>
+
+    <p class="result-row">
+        <strong>Status:</strong>
+        <span id="status"></span>
+    </p>
+
+    <p class="result-row"><strong>Date:</strong> <span id="date"></span></p>
+
+    <button class="btn" onclick="window.location.href='index.html'">Back to Home</button>
+</div>
+
+<script>
+window.onload = function () {
+    const result = JSON.parse(localStorage.getItem("scoreResult"));
+
+    if (!result) {
+        window.location.href = "score-login.html";
+        return;
+    }
+
+    document.getElementById("name").innerText = result.name;
+    document.getElementById("email").innerText = result.email;
+    document.getElementById("score").innerText = result.score;
+
+    const statusEl = document.getElementById("status");
+    statusEl.innerText = result.status;
+
+    if (result.status === "PASS") {
+        statusEl.classList.add("status-pass");
+    } else {
+        statusEl.classList.add("status-fail");
+    }
+
+    document.getElementById("date").innerText = result.date;
+};
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Delete Question</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+    body {
+        background: #e8f1ff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .top-bar {
+        background: #0d6efd;
+        color: white;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .nav-links a {
+        margin-left: 20px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .button-container {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .menu-btn {
+        background: #0d6efd;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .card {
+        background: white;
+        width: 45%;
+        margin: 60px auto;
+        padding: 40px;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+        color: #0d6efd;
+        text-align: center;
+    }
+
+    select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 14px;
+        margin-top: 25px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="top-bar">
+    Online Examination System
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="admin-dashboard.html">Admin Dashboard</a>
+        <a href="index.html" style="color:#ffd2d2;">Exit</a>
+    </div>
+</div>
+
+<div class="button-container">
+    <button class="menu-btn" onclick="location.href='add-questions.html'">Add Question</button>
+    <button class="menu-btn" onclick="location.href='update-questions.html'">Update Question</button>
+    <button class="menu-btn" onclick="location.href='delete-questions.html'">Delete Question</button>
+</div>
+
+<div class="card">
+    <h2>Select Question to Delete</h2>
+
+    <select id="deleteSelect"></select>
+
+    <button onclick="deleteQuestion()">Delete</button>
+</div>
+
+<script>
+fetch("http://localhost:8081/api/questions/all")
+    .then(res => res.json())
+    .then(questions => {
+        const select = document.getElementById("deleteSelect");
+
+        questions.forEach((q, index) => {
+            const option = document.createElement("option");
+            option.value = q.id;
+            option.textContent = (index + 1) + ". " + q.questionText;
+            select.appendChild(option);
+        });
+    });
+
+function deleteQuestion() {
+    const id = document.getElementById("deleteSelect").value;
+
+    fetch("http://localhost:8081/api/questions/delete/" + id, {
+        method: "DELETE"
+    }).then(r => r.text()).then(alert);
+}
+</script>
+
+</body>
+</html>
+

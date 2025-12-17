@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check Your Exam Score</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .score-container {
+            max-width: 450px;
+            margin: 120px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        .score-container h2 {
+            margin-bottom: 20px;
+            font-size: 26px;
+        }
+        .score-container input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        .error-msg {
+            color: red;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <h2 class="logo">Online Examination System</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="signin.html">Login</a>
+    </nav>
+</header>
+
+<div class="score-container">
+    <h2>Check Your Exam Score</h2>
+
+    <input type="email" id="email" placeholder="Enter your email">
+    <input type="password" id="password" placeholder="Enter your password">
+
+    <button class="btn" onclick="checkScore()">Get Score</button>
+
+    <p id="error" class="error-msg"></p>
+</div>
+
+<script>
+async function checkScore() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const errorMsg = document.getElementById("error");
+
+    errorMsg.innerText = "";
+
+    if (!email || !password) {
+        errorMsg.innerText = "Please enter email and password";
+        return;
+    }
+
+    try {
+        const res = await fetch(
+            `http://localhost:8081/api/exam/result?email=${email}&password=${password}`
+        );
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            errorMsg.innerText = data.error || "Invalid email or password";
+            return;
+        }
+
+        // Save result in localStorage
+        localStorage.setItem("scoreResult", JSON.stringify(data));
+
+        // Redirect to result page
+        window.location.href = "score-result.html";
+
+    } catch (e) {
+        errorMsg.innerText = "Server error, please try again.";
+    }
+}
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam Attempt Restricted</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .blocked-container {
+            text-align: center;
+            margin-top: 120px;
+        }
+        .blocked-container h2 {
+            color: red;
+            margin-bottom: 15px;
+        }
+        .blocked-container p {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+        .blocked-container button {
+            padding: 12px 22px;
+            font-size: 16px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .blocked-container button:hover {
+            background: #0b5ed7;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <h2 class="logo">Online Examination System</h2>
+</header>
+
+<div class="blocked-container">
+    <h2>❌ Exam Attempt Not Allowed</h2>
+    <p>
+        You have already completed the exam.<br>
+        Only <b>one attempt</b> is permitted.
+    </p>
+
+    <button onclick="window.location.href='index.html'">
+        Go to Home
+    </button>
+</div>
+
+</body>
+</html>
+

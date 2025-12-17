@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Result</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="navbar">
+    <h2 class="logo">Online Examination System</h2>
+</header>
+
+<div class="center-body">
+    <div class="auth-card">
+        <h2 class="auth-title">Check Your Result</h2>
+
+        <form id="resultForm" class="auth-form">
+            <label>Email</label>
+            <input id="email" type="email" required>
+
+            <label>Password</label>
+            <input id="password" type="password" required>
+
+            <button class="auth-btn" type="submit">View Result</button>
+        </form>
+
+        <p id="message" class="msg"></p>
+
+        <div id="resultBox"></div>
+    </div>
+</div>
+
+<script>
+document.getElementById("resultForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+    let msg = document.getElementById("message");
+    let box = document.getElementById("resultBox");
+
+    box.innerHTML = "";
+    msg.className = "msg";
+
+    try {
+        const res = await fetch(
+            `http://localhost:8081/api/results/by-user?email=${email}&password=${password}`
+        );
+
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+            msg.className = "msg error";
+            msg.innerText = data;
+            return;
+        }
+
+        msg.className = "msg success";
+        msg.innerText = "Result loaded";
+
+        let html = "<h3>Your Results</h3>";
+        data.forEach(r => {
+            html += `
+                <div class="card" style="margin:10px; padding:10px;">
+                    <b>Score:</b> ${r.score}<br>
+                    <b>Status:</b> ${r.resultStatus}<br>
+                    <b>Submitted At:</b> ${r.submittedAt}
+                </div>
+            `;
+        });
+
+        box.innerHTML = html;
+
+    } catch (e) {
+        msg.className = "msg error";
+        msg.innerText = "Server unreachable";
+    }
+});
+</script>
+
+</body>
+</html>
+

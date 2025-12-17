@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam - Online Examination System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="navbar" style="display:flex; justify-content:space-between; align-items:center;">
+    <h2 class="logo">Online Examination System</h2>
+    <h3 id="timer" style="color:yellow; font-weight:bold; margin-right:30px;">Loading...</h3>
+</header>
+
+
+<div class="exam-container">
+    <h2>Exam - 60 Questions</h2>
+
+    <!-- TIMER DISPLAY -->
+
+    <div id="questionBox">Loading questions...</div>
+
+    <div style="margin-top: 20px;">
+        <button id="prevBtn" onclick="prevQuestion()" style="display:none; margin-right:10px;">Previous</button>
+        <button id="nextBtn" onclick="nextQuestion()">Next</button>
+        <button id="submitBtn" onclick="submitExam()" style="display:none; margin-left:10px; background:#28a745;">Submit</button>
+    </div>
+</div>
+
+<script>
+let questions = [];
+let index = 0;
+let userAnswers = {};
+let remainingSeconds = 3600;
+
+// ------------------------------
+// START 60 MINUTE TIMER
+// ------------------------------
+async function startExamTimer() {
+    const userId = localStorage.getItem("userId");
+
+    const res = await fetch("http://localhost:8081/api/exam/start?userId=" + userId);
+    const data = await res.json();
+
+    remainingSeconds = data.remainingSeconds;
+
+    const timerEl = document.getElementById("timer");
+
+    const interval = setInterval(() => {
+        remainingSeconds--;
+
+        let min = Math.floor(remainingSeconds / 60);
+        let sec = remainingSeconds % 60;
+
+        timerEl.textContent = `Time Left: ${min}m ${sec}s`;
+
+        if (remainingSeconds <= 0) {
+            clearInterval(interval);
+            submitExam(true);
+        }
+
+    }, 1000);
+}
+
+startExamTimer();
+
+
+
+// ------------------------------
+// LOAD QUESTIONS
+// ------------------------------
+async function loadQuestions() {
+    try {
+        const res = await fetch("http://localhost:8081/api/questions/all");
+        questions = await res.json();
+
+        if (!Array.isArray(questions) || questions.length === 0) {
+            document.getElementById("questionBox").innerHTML = "<p>No questions found.</p>";
+            return;
+        }
+
+        showQuestion();
+    } catch (err) {
+        document.getElementById("questionBox").innerHTML =
+            "<p style='color:red;'>Failed to load questions.</p>";
+    }
+}
+
+function showQuestion() {
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+
+    if (index === questions.length - 1) {
+        nextBtn.style.display = "none";
+        submitBtn.style.display = "inline-block";
+    } else {
+        nextBtn.style.display = "inline-block";
+        submitBtn.style.display = "none";
+    }
+
+    prevBtn.style.display = index === 0 ? "none" : "inline-block";
+
+    const q = questions[index];
+    const saved = userAnswers[q.id] || "";
+
+    document.getElementById("questionBox").innerHTML = `
+        <h3>Q${index + 1}. ${q.questionText}</h3>
+
+        <label><input type="radio" name="opt" value="A" ${saved === "A" ? "checked" : ""}> ${q.optionA}</label><br>
+        <label><input type="radio" name="opt" value="B" ${saved === "B" ? "checked" : ""}> ${q.optionB}</label><br>
+        <label><input type="radio" name="opt" value="C" ${saved === "C" ? "checked" : ""}> ${q.optionC}</label><br>
+        <label><input type="radio" name="opt" value="D" ${saved === "D" ? "checked" : ""}> ${q.optionD}</label><br>
+    `;
+
+    document.querySelectorAll("input[name='opt']").forEach(opt => {
+        opt.addEventListener("change", e => {
+            userAnswers[q.id] = e.target.value;
+        });
+    });
+}
+
+function nextQuestion() {
+    const q = questions[index];
+    const selected = document.querySelector("input[name='opt']:checked");
+    if (selected) userAnswers[q.id] = selected.value;
+
+    if (index < questions.length - 1) {
+        index++;
+        showQuestion();
+    }
+}
+
+function prevQuestion() {
+    if (index > 0) {
+        index--;
+        showQuestion();
+    }
+}
+
+// ------------------------------
+// SUBMIT EXAM
+// ------------------------------
+async function submitExam(auto = false) {
+    const q = questions[index];
+    const selected = document.querySelector("input[name='opt']:checked");
+    if (selected) {
+        userAnswers[q.id] = selected.value;
+    }
+
+    const payload = {
+        userId: localStorage.getItem("userId"),
+        answers: userAnswers
+    };
+
+    await fetch("http://localhost:8081/api/exam/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+
+    // ❌ Remove popup
+    // ❌ No alert()
+
+    // ⭐ Immediately redirect to submitted page
+    window.location.href = "submitted.html";
+}
+
+
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        submitExam(true);   // Auto-submit
+    }
+});
+
+window.addEventListener("beforeunload", function () {
+    submitExam(true);
+});
+
+
+loadQuestions();
+</script>
+
+</body>
+</html>
+

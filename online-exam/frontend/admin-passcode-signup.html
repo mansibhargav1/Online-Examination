@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin User Creation Access</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .center-body {
+            height: calc(100vh - 80px);
+        }
+        .admin-box {
+            background: #ffffff;
+            padding: 30px;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        .admin-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .error-msg {
+            color: red;
+            margin-top: 8px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <h2 class="logo">Online Examination System</h2>
+</header>
+
+<div class="center-body">
+    <div class="admin-box">
+        <h2>Admin Verification</h2>
+        <p>Enter admin passcode to create a new user</p>
+
+        <input type="password" id="passcode" placeholder="Enter Admin Passcode">
+        <button class="btn" onclick="verifyPasscode()">Verify</button>
+
+        <p class="error-msg" id="errorMsg">Incorrect passcode!</p>
+    </div>
+</div>
+
+<script>
+    function verifyPasscode() {
+        const correctPasscode = "ADMIN123";  // SAME PASSCODE
+        const input = document.getElementById("passcode").value;
+
+        if (input === correctPasscode) {
+            window.location.href = "signup.html";
+        } else {
+            document.getElementById("errorMsg").style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,271 @@
+/* ======================================================
+   GLOBAL BLUE THEME — MICROSOFT TEAMS STYLE UI
+====================================================== */
+:root {
+    --primary-blue: #1a73e8;
+    --primary-blue-dark: #1558b0;
+    --bg-light: #e9f0ff;
+    --bg-white: #ffffff;
+    --text-dark: #222;
+    --text-light: #555;
+    --card-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+}
+
+/* ======================================================
+   NAVBAR
+====================================================== */
+.navbar {
+    background: var(--primary-blue);
+    padding: 18px 40px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--card-shadow);
+}
+
+.navbar .logo {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+nav a {
+    color: #e9f3ff;
+    margin-left: 25px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+nav a:hover,
+nav a.active {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* ======================================================
+   HERO SECTION
+====================================================== */
+.hero,
+.hero-clean {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(to bottom, #d9e9ff, #eef4ff);
+}
+
+.hero h2,
+.hero-clean h1 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #124a99;
+}
+
+.hero p,
+.hero-clean p {
+    font-size: 18px;
+    color: #333;
+}
+
+.hero button,
+.hero-clean button {
+    padding: 14px 30px;
+    background: var(--primary-blue);
+    border: none;
+    color: white;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.hero button:hover {
+    background: var(--primary-blue-dark);
+}
+/* ======================================================
+   HERO LOGO SIZE CONTROL
+====================================================== */
+.hero img,
+.hero-clean img {
+    max-width: 180px;   /* 👈 reduce logo size */
+    height: auto;
+    margin-top: 30px;
+}
+
+/* ======================================================
+   PANELS / CARDS
+====================================================== */
+.card,
+.card-premium {
+    background: var(--bg-white);
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    text-align: center;
+    transition: transform .25s;
+}
+
+.card:hover,
+.card-premium:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.card button,
+.card-premium button {
+    background: var(--primary-blue);
+    color: white;
+    border-radius: 6px;
+    padding: 12px 20px;
+    border: none;
+}
+
+.card button:hover,
+.card-premium button:hover {
+    background: var(--primary-blue-dark);
+}
+
+/* ======================================================
+   CENTERED AUTH / FORMS
+====================================================== */
+.center-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px);
+    background: var(--bg-light);
+}
+
+.auth-card {
+    background: white;
+    padding: 40px;
+    width: 380px;
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+}
+
+.auth-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--primary-blue);
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #bcd0ff;
+    border-radius: 6px;
+    margin-top: 6px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    background: #f6f9ff;
+}
+
+.auth-form input:focus {
+    border: 1px solid var(--primary-blue);
+    outline: none;
+    background: #ffffff;
+}
+
+.auth-btn {
+    width: 100%;
+    background: var(--primary-blue);
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.auth-btn:hover {
+    background: var(--primary-blue-dark);
+}
+
+/* ======================================================
+   SUCCESS / ERROR MESSAGES
+====================================================== */
+.msg.success {
+    background: #d1e9ff;
+    border: 1px solid #a7cdff;
+    color: #0759c5;
+}
+
+.msg.error {
+    background: #ffe0e0;
+    border: 1px solid #ffbdbd;
+    color: #ae1c1c;
+}
+
+/* ======================================================
+   QUESTION TABS
+====================================================== */
+.question-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 18px 0;
+    background: #dce7ff;
+    border-bottom: 2px solid #bcd0ff;
+}
+
+.tab-btn {
+    padding: 12px 25px;
+    background: var(--primary-blue);
+    color: white;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.tab-btn.active {
+    background: var(--primary-blue-dark);
+}
+
+/* ======================================================
+   SUPPORT / HELP PAGE
+====================================================== */
+.page-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+.support-card {
+    width: 520px;
+    padding: 25px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+}
+
+.support-btn {
+    background: var(--primary-blue);
+    padding: 14px;
+    border-radius: 6px;
+    color: white;
+}
+
+.support-btn:hover {
+    background: var(--primary-blue-dark);
+}
+
+/* ======================================================
+   FOOTER
+====================================================== */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #d4e3ff;
+    color: #333;
+}
+
