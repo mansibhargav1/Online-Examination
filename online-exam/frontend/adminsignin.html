@@ -37,7 +37,8 @@
         <p id="adminMessage" class="msg"></p>
 
         <div class="auth-footer">
-            New Admin? <a href="adminsignup.html">Create Account</a>
+            New Admin?
+            <a href="adminsignup.html">Create Account</a>
         </div>
 
     </div>
@@ -47,8 +48,7 @@
 async function handleAdminSignin(event) {
     event.preventDefault();
 
-    let msg = document.getElementById("adminMessage");
-
+    const msg = document.getElementById("adminMessage");
     const email = document.getElementById("adminEmail").value.trim();
     const password = document.getElementById("adminPassword").value.trim();
 
@@ -64,7 +64,9 @@ async function handleAdminSignin(event) {
         if (res.ok && text.toLowerCase().includes("success")) {
             msg.className = "msg success";
             msg.innerText = "Login successful! Redirecting...";
-            setTimeout(() => window.location.href = "admindashboard.html", 1500);
+            setTimeout(() => {
+                window.location.href = "add-questions.html";
+            }, 1000);
         } else {
             msg.className = "msg error";
             msg.innerText = "Invalid admin credentials.";
