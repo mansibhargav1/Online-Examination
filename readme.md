@@ -261,7 +261,7 @@ spring.datasource.password=exampass
 
 ## 👨‍💻 Author
 
-Developed by **Ari Ji**  
+Developed by **Mansi**  
 Full‑Stack / DevOps Project
 
 ---
