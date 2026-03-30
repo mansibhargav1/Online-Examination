@@ -1,278 +1,165 @@
-# 📝 Online Examination System
+# 📝 Online Examination System (Cloud Deployment)
 
-A **full‑stack Online Examination System** built using **Spring Boot, MySQL, HTML/CSS/JavaScript**, fully **Dockerized** using **Docker Compose**. This system allows users to take an exam **only once**, automatically manages exam timing, prevents multiple attempts, and stores all results securely in MySQL.
-
----
-
-## 🚀 Features
-
-### 👨‍🎓 Student
-- User registration & login
-- Start exam (only **one attempt allowed**)
-- Timer‑based online exam
-- Auto‑submit on:
-  - Time expiry
-  - Tab switch / page change (security)
-- View score after submission
-
-### 👨‍🏫 Admin
-- Admin login
-- Add / update / delete questions
-- Secure admin passcode flow
-- View user results
-
-### 🔐 Security Rules
-- One exam attempt per user
-- Attempt stored using `results` table
-- Tab switch / browser change auto‑submits exam
+A **full-stack Online Examination System** built using **Spring Boot, MySQL, HTML/CSS/JavaScript**, deployed on a **GCP Virtual Machine using Docker Compose**.
 
 ---
 
-## 🏗️ Tech Stack
+## 🚀 Live Application
 
-| Layer | Technology |
-|------|------------|
-| Frontend | HTML, CSS, JavaScript |
-| Backend | Spring Boot (Java) |
-| Database | MySQL 8 |
-| Containerization | Docker, Docker Compose |
+🌐 **Access URL:**
+http://34.58.25.111:8080
 
 ---
 
-## 📂 Project Structure
+## 📸 Application Screenshot
+
+<img width="1429" height="859" alt="image" src="https://github.com/user-attachments/assets/44ada731-b865-49c4-95c8-2b46841c8e09" />
+
+
+
+---
+
+## 🏗️ Architecture
 
 ```
-online-exam/
-├── backend/
-│   ├── Dockerfile
-│   ├── pom.xml
-│   └── src/main/java/com/examapp
-│       ├── controller
-│       ├── service
-│       ├── repository
-│       ├── model
-│       └── config
-│
-├── frontend/
-│   ├── Dockerfile
-│   ├── index.html
-│   ├── exam.html
-│   ├── styles.css
-│   ├── app.js
-│   └── other html pages
-│
-├── docker-compose.yml
-└── README.md
+GCP VM (Ubuntu)
+   ├── Frontend (Nginx - Docker)
+   ├── Backend (Spring Boot - Docker)
+   └── MySQL (Docker)
 ```
 
 ---
 
-## 🐳 Docker Setup
+## 🧰 Tech Stack
 
-### 🔧 Prerequisites
-- Docker
-- Docker Compose
+| Layer            | Technology                             |
+| ---------------- | -------------------------------------- |
+| Frontend         | HTML, CSS, JavaScript                  |
+| Backend          | Spring Boot (Java)                     |
+| Database         | MySQL 8                                |
+| Containerization | Docker, Docker Compose                 |
+| Cloud            | Google Cloud Platform (Compute Engine) |
 
-Check installation:
+---
+
+## ⚙️ Setup on GCP VM
+
+### 🔹 1. Create VM
+
+* Machine Type: `e2-medium`
+* OS: Ubuntu 22.04
+* Enable HTTP/HTTPS traffic
+
+---
+
+### 🔹 2. Install Dependencies
+
 ```bash
-docker --version
-docker-compose --version
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git curl unzip vim
+
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Enable Docker for user
+sudo usermod -aG docker $USER
+newgrp docker
 ```
 
 ---
 
-## ▶️ Run the Project (Step‑by‑Step)
+### 🔹 3. Clone Repository
 
-### 1️⃣ Clone Repository
 ```bash
-git clone <your-git-repo-url>
+git clone <your-repo-url>
 cd online-exam
 ```
 
-### 2️⃣ Build & Start Containers
+---
+
+### 🔹 4. Run Application
+
 ```bash
-docker-compose up --build
+docker compose up --build -d
 ```
 
-### 3️⃣ Verify Running Containers
+---
+
+### 🔹 5. Verify Containers
+
 ```bash
 docker ps
 ```
 
-Expected services:
-- `exam-backend`
-- `exam-frontend`
-- `exam-mysql`
+Expected containers:
+
+* exam-frontend
+* exam-backend
+* exam-mysql
 
 ---
 
 ## 🌐 Access Application
 
-| Service | URL |
-|------|-----|
-| Frontend | http://localhost:8080 |
-| Backend API | http://localhost:8081 |
-| MySQL | localhost:3306 |
+| Service     | URL                 |
+| ----------- | ------------------- |
+| Frontend    | http://<VM_IP>:8080 |
+| Backend API | http://<VM_IP>:8081 |
 
 ---
 
-## 🛢️ MySQL Database Setup
+## 🔓 Firewall Configuration
 
-### Enter MySQL Container
-```bash
-docker exec -it exam-mysql mysql -u examuser -pexampass
-```
+Allow ports:
 
-### Show Databases
-```sql
-SHOW DATABASES;
-```
-
-### Use Exam Database
-```sql
-USE examdb;
-```
-
-### Show Tables
-```sql
-SHOW TABLES;
-```
-
-Tables:
-- `users`
-- `admins`
-- `questions`
-- `results`
-- `user_answers`
+* 8080 (Frontend)
+* 8081 (Backend)
 
 ---
 
-## 🧾 Important Tables Explanation
+## 🛢️ Database Details
 
-### 👤 users
-Stores registered users.
-```sql
-SELECT * FROM users;
-```
-
-### ❓ questions
-Stores exam questions.
-```sql
-SELECT * FROM questions;
-```
-
-### 🧮 results
-Stores **one exam attempt per user**.
-```sql
-SELECT * FROM results;
-```
-
-Used to:
-- Prevent multiple exam attempts
-- Track start & end time
-- Store score & result status
-
-### ✍️ user_answers
-Stores answers selected by users.
-```sql
-SELECT * FROM user_answers;
-```
+| Field    | Value    |
+| -------- | -------- |
+| DB Name  | examdb   |
+| Username | examuser |
+| Password | exampass |
+| Port     | 3306     |
 
 ---
 
-## 🔒 One‑Attempt Enforcement Logic
+## ⚠️ Limitations (Current Setup)
 
-- When exam starts → entry inserted into `results`
-- On re‑attempt → system checks `results` table
-- If record exists → exam blocked
-
-```sql
-SELECT * FROM results WHERE user_id = ?;
-```
+* MySQL runs inside container ❌
+* No automated backup ❌
+* Not production-grade yet ❌
 
 ---
 
-## ⏱️ Exam Auto‑Submit Logic
+## 🚀 Future Enhancements
 
-- JavaScript tracks exam time
-- `visibilitychange` event triggers auto‑submit
-- Backend stores submission immediately
-
----
-
-## 🔄 Reset Data (For Testing)
-
-⚠️ **Use carefully**
-
-```sql
-DELETE FROM results;
-DELETE FROM user_answers;
-```
-
-Reset auto‑increment:
-```sql
-ALTER TABLE results AUTO_INCREMENT = 1;
-ALTER TABLE user_answers AUTO_INCREMENT = 1;
-```
-
----
-
-## 🛑 Stop & Remove Containers
-
-```bash
-docker-compose down
-```
-
-Remove volumes (fresh DB):
-```bash
-docker-compose down -v
-```
-
----
-
-## 🧪 Rebuild Only Backend / Frontend
-
-```bash
-docker-compose build backend
-docker-compose build frontend
-```
-
----
-
-## 📌 Environment Configuration
-
-Backend:
-```
-spring.datasource.url=jdbc:mysql://exam-mysql:3306/examdb
-spring.datasource.username=examuser
-spring.datasource.password=exampass
-```
-
----
-
-## 📈 Future Enhancements
-
-- JWT authentication
-- Result analytics dashboard
-- Question randomization
-- Proctoring (camera / mic)
+* Move DB to **Cloud SQL**
+* Enable **automatic backups (24 hrs)**
+* Use **Secret Manager**
+* Deploy on **GKE (Kubernetes)**
+* Add CI/CD (GitHub Actions / Jenkins)
 
 ---
 
 ## 👨‍💻 Author
 
-Developed by **Mansi**  
-Full‑Stack / DevOps Project
+Developed by **Mansi**
+Full Stack + DevOps Project
 
 ---
 
-## ⭐ Final Notes
+## ⭐ Final Note
 
-This project is:
-- ✅ Fully Dockerized
-- ✅ Interview‑ready
-- ✅ College submission ready
-- ✅ Production structured
+This project demonstrates:
 
-Feel free to fork, modify, or enhance 🚀
+* Containerization using Docker
+* Cloud deployment on GCP VM
+* Full-stack integration
 
+Ready for further scaling to Kubernetes 🚀
