@@ -1,4 +1,4 @@
-<img width="1430" height="672" alt="image" src="https://github.com/user-attachments/assets/e2f5aded-5af3-439a-a211-92cc9a954baf" /># 📝 Online Examination System (Cloud Deployment)
+# 📝 Online Examination System (Cloud Deployment)
 
 A **full-stack Online Examination System** built using **Spring Boot, MySQL, HTML/CSS/JavaScript**, deployed on a **GCP Virtual Machine using Docker Compose**.
 
