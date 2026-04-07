@@ -1,4 +1,4 @@
-# 📝 Online Examination System (Cloud Deployment)
+<img width="1430" height="672" alt="image" src="https://github.com/user-attachments/assets/e2f5aded-5af3-439a-a211-92cc9a954baf" /># 📝 Online Examination System (Cloud Deployment)
 
 A **full-stack Online Examination System** built using **Spring Boot, MySQL, HTML/CSS/JavaScript**, deployed on a **GCP Virtual Machine using Docker Compose**.
 
@@ -38,7 +38,7 @@ GCP VM (Ubuntu)
 | Frontend         | HTML, CSS, JavaScript                  |
 | Backend          | Spring Boot (Java)                     |
 | Database         | MySQL 8                                |
-| Containerization | Docker, Docker Compose                 |
+| Containerization | Docker, Docker Compose, Harbor (Private Registry) |
 | Cloud            | Google Cloud Platform (Compute Engine) |
 
 ---
@@ -85,6 +85,24 @@ cd online-exam
 docker compose up --build -d
 ```
 
+## 🐳 Harbor (Private Docker Registry)
+
+A private container registry (Harbor) is used to store Docker images securely with HTTPS enabled.
+
+- URL: https://harbor.local  
+- Used for managing application images  
+- Secured using TLS certificates  
+
+<img width="1430" height="672" alt="image" src="https://github.com/user-attachments/assets/c358c948-8a2d-499f-b335-f03bb4a87241" />
+
+
+---
+
+## 📦 Image Push Example
+
+```bash
+docker tag exam-backend harbor.local/online-exam/backend:v1
+docker push harbor.local/online-exam/backend:v1
 ---
 
 ### 🔹 5. Verify Containers
