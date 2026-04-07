@@ -7,13 +7,14 @@ A **full-stack Online Examination System** built using **Spring Boot, MySQL, HTM
 ## 🚀 Live Application
 
 🌐 **Access URL:**
-http://34.58.25.111:8080
+http://onlinexam:8080
 
 ---
 
 ## 📸 Application Screenshot
 
-<img width="1429" height="859" alt="image" src="https://github.com/user-attachments/assets/44ada731-b865-49c4-95c8-2b46841c8e09" />
+<img width="1436" height="852" alt="image" src="https://github.com/user-attachments/assets/2ef88029-df30-48ba-854d-c4b092dc5140" />
+
 
 
 
