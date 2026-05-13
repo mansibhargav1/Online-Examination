@@ -13,7 +13,8 @@ http://onlinexam:8080
 
 ## 📸 Application Screenshot
 
-<img width="1436" height="852" alt="image" src="https://github.com/user-attachments/assets/2ef88029-df30-48ba-854d-c4b092dc5140" />
+![Uploading image.png…]()
+
 
 
 
