@@ -1,0 +1,7 @@
+apiVersion: v2
+name: mysql-innodb
+description: MySQL 8 with InnoDB for minikube
+type: application
+version: 0.1.0
+appVersion: "8.0.36"
+

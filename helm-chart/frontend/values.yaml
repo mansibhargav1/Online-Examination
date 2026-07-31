@@ -1,0 +1,27 @@
+replicaCount: 1
+
+image:
+  repository: bmansi551376/online-exam
+  tag: "frontend-1.0.0"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: docker-registry-secret
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 80
+  nodePort: 30080
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "50m"
+  limits:
+    memory: "128Mi"
+    cpu: "250m"
+
+ingress:
+  enabled: false
+

@@ -1,0 +1,42 @@
+replicaCount: 1
+
+image:
+  repository: bmansi551376/online-exam
+  tag: "backend-1.1.0"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: docker-registry-secret
+
+service:
+  name: backend
+  type: ClusterIP
+  port: 8000
+  targetPort: 8000
+
+db:
+  host: mysql-innodb-mysql
+  port: 3306
+  name: appdb
+  existingSecret: mysql-innodb-mysql-secret
+
+env:
+  JWT_SECRET: "change-this-to-a-long-random-string"
+  ADMIN_EMAIL: "admin@exam.com"
+  ADMIN_PASSWORD: "Admin@12345"
+  QUESTION_TIME_SECONDS: "120"
+  SEED_DEMO_EXAM: "true"
+  CORS_ORIGINS: "http://localhost:30080"
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+probes:
+  enabled: true
+  path: /api/health
+

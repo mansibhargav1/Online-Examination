@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-mysql
+spec:
+  serviceName: {{ .Release.Name }}-mysql
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-mysql
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-mysql
+    spec:
+      containers:
+        - name: mysql
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: mysql
+              containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-mysql-secret
+                  key: mysql-root-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-mysql-secret
+                  key: mysql-database
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-mysql-secret
+                  key: mysql-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-mysql-secret
+                  key: mysql-password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
+            - name: config
+              mountPath: /etc/mysql/conf.d/my.cnf
+              subPath: my.cnf
+          livenessProbe:
+            exec:
+              command: ["mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p$(MYSQL_ROOT_PASSWORD)"]
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p$(MYSQL_ROOT_PASSWORD)"]
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-mysql-config
+{{- if not .Values.persistence.enabled }}
+        - name: data
+          emptyDir: {}
+{{- end }}
+{{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: {{ .Values.persistence.storageClass | quote }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+{{- end }}
+
