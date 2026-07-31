@@ -1,0 +1,34 @@
+image:
+  repository: mysql
+  tag: "8.0.36"
+  pullPolicy: IfNotPresent
+
+auth:
+  rootPassword: rootpass123
+  database: appdb
+  username: appuser
+  password: apppass123
+
+service:
+  type: ClusterIP
+  port: 3306
+
+persistence:
+  enabled: true
+  storageClass: "standard"
+  size: 5Gi
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"
+    cpu: "500m"
+
+innodb:
+  bufferPoolSize: 256M
+  logFileSize: 64M
+  flushLogAtTrxCommit: 2
+  fileFormat: Barracuda
+
