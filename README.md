@@ -1,4 +1,4 @@
-# Online Examination System
+# Online Examination System Portal
 
 A full-stack, invigilated online examination portal. Candidates apply, an administrator issues their credentials, and each exam runs as a **server-timed, one-question-at-a-time** MCQ engine — the clock lives on the server, so refreshing, switching tabs, or closing the laptop never buys extra time.
 
