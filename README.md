@@ -209,3 +209,11 @@ Email delivery is optional. With `MAIL_ENABLED=false`, the application works nor
     ├── backend/
     └── frontend/
 ```
+
+---
+
+## GitLab CI/CD
+
+```bash
+https://gitlab.com/mansi119bhargav/online-examination
+```
