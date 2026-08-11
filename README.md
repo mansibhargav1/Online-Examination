@@ -212,7 +212,7 @@ Email delivery is optional. With `MAIL_ENABLED=false`, the application works nor
 
 ---
 
-## GitLab CI/CD
+## GitLab CI/CD URL
 
 ```bash
 https://gitlab.com/mansi119bhargav/online-examination
