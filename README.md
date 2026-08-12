@@ -217,3 +217,6 @@ Email delivery is optional. With `MAIL_ENABLED=false`, the application works nor
 ```bash
 https://gitlab.com/mansi119bhargav/online-examination
 ```
+
+<img width="1434" height="789" alt="image" src="https://github.com/user-attachments/assets/61bc8d91-c33d-46ac-acf9-d7f9c2f24671" />
+
